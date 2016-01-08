@@ -17,18 +17,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         height: 100%;
         position: relative;
-        --paper-tab-ink: #ddd;
-        --paper-tab{
-          background: #ddd;
-        }
+        --paper-dialog-background-color: #fff;
+      }
+
+      #positionDetail{
+        margin-top: 0;
+      }
+
+      #buttonRefresh{
+        margin-top: 26%;
+        margin-right: 48px;
       }
       google-map {
         height: 100%;
       }
+      .small {
+        --iron-icon-height: 18px;
+        --iron-icon-width: 18px;
+        position: relative;
+        top: -2px;
+      }
 
     </style>
     <iron-ajax id="reqSat"
-       auto
        url="https://api.wheretheiss.at/v1/satellites/25544"
        handle-as="json"
        on-request = "handleRequest"
@@ -38,10 +49,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="layout horizontal">
           <div class="flex title">
             <h1 id="titleISS">ISS Location</h1>
-            <p>Last Check = <span id="lastCheck">{{lastCheck}}</span></p> 
+            <p><iron-icon class="small" icon="device:access-time"></iron-icon> <span id="lastCheck">{{lastCheck}}</span></p>
           </div>
           <div>
-          <paper-button class="white" on-click="refreshData" raised><iron-icon icon="refresh"></iron-icon> Refresh</paper-button>
+          <paper-button class="white" id="buttonRefresh" on-click="refreshData" raised><iron-icon icon="refresh"></iron-icon> Refresh</paper-button>
           </div>
         </div>
         <paper-tabs selected="0">
@@ -98,7 +109,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var height = 576 - 170;
           this.$.positionSatelite.style.height = height + 'px';
 
-          document.querySelector('app-layout').title = "Current Location";
+          document.querySelector('app-layout').title = 'Current Location';
         },
         handleResponse: function(e) {
           // console.log(e.detail.response);
@@ -113,13 +124,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           satelite.zoom = 3;
           satelite.resize();
 
-          var monthNames = [
-            'January', 'February', 'March',
-            'April', 'May', 'June', 'July',
-            'August', 'September', 'October',
-            'November', 'December'
-          ];
-
           var date = new Date(e.detail.response.timestamp * 1000);
           var day = date.getDate();
           var monthIndex = date.getMonth();
@@ -130,7 +134,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var minutes = '0' + date.getMinutes();
           // Seconds part from the timestamp
           var seconds = '0' + date.getSeconds();
-          this.lastCheck = day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' + hours + ':' + 
+          this.lastCheck = day + '-' + (monthIndex + 1) + '-' + year + ' ' + hours + ':' + 
                             minutes.substr(-2) + ':' + seconds.substr(-2);
         },
         handleRequest: function() {

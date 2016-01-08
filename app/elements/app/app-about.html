@@ -22,36 +22,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       google-map {
         height: 100%;
       }
+      .card-holder{
+        @apply(--layout-vertical);
+        @apply(--center-justified);
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      paper-card{
+        max-width: 100%;
+        margin-top: 24px; 
+      }
+
+      .fancy img {
+        width: 100%;
+      }
 
     </style>
-        <div class="layout horizontal">
-          <div class="flex title">
-            <h1 id="titleISS">ISS Location</h1>
-            <p>Last Check = <span id="lastCheck">{{lastCheck}}</span></p> 
-          </div>
-          <div>
-          <paper-button class="white" on-click="refreshData" raised><iron-icon icon="refresh"></iron-icon> Refresh</paper-button>
-          </div>
+    <div class="card-holder">
+      <paper-card heading="ISS Locator" class="fancy" image="" elevation="1" animated-shadow="false">
+        <img src="/images/iss-future.jpg">
+        <div class="card-content">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
         </div>
-        <paper-tabs selected="0">
-          <paper-tab on-click="showInformation">Information</paper-tab>
-          <paper-tab on-click="showMap">Location</paper-tab>
-        </paper-tabs>
-        <paper-material class="positionDetail" id="positionDetail" elevation="0 ">
-            <div class="layout horizontal">
-            <div class="img-holder">
-              <img src="/images/iss-future.jpg" width="240px">
-            </div>
-            <div class="flex">
-              <p>Latitude = {{positionResponse.latitude}}</p> 
-              <p>Longitude = {{positionResponse.longitude}}</p> 
-              <p>Altitude = {{positionResponse.altitude}}</p> 
-              <p>Velocity = {{positionResponse.velocity}}</p> 
-              <p>Visibility = {{positionResponse.visibility}}</p> 
-            </div>
-            </div>
-        </paper-material>
-        
+      </paper-card>
+    </div>
   </template>
 
   <script>
@@ -76,6 +71,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               };
             }
           }
+        },
+        attached: function() {
+          document.querySelector('app-layout').title = 'About';
         }
       });
     })();
