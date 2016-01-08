@@ -26,7 +26,7 @@ app-intro{
 	background-size: cover;
 	position: relative;
 	text-align: center;
-	color: #fff;
+	color: #ffff02;
 }
 
 
@@ -54,4 +54,15 @@ paper-button a{
 
 app-intro .top-hold{
   height: 100%;
+}
+
+
+.positionDetail{
+	padding: 24px 48px;
+	margin-bottom: 20px;
+}
+
+.content .title{
+	padding-left: 48px;
+	padding-right: 48px;
 }

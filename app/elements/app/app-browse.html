@@ -8,6 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<script src="../../bower_components/moment/moment.js"></script>
 
 <dom-module id="app-browse">
   <template>
@@ -17,19 +18,52 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         height: 100%;
         position: relative;
+        --paper-tab{
+          background: #ddd;
+          color: #ddd;
+        }
+        --paper-tab-content{
+          background: #ddd;
+          color: #ddd;
+        }
       }
-    google-map {
-      height: 100vh;
-    }
+      google-map {
+        height: 100%;
+      }
+
     </style>
-    <iron-ajax
+    <iron-ajax id="reqSat"
        auto
        url="https://api.wheretheiss.at/v1/satellites/25544"
        handle-as="json"
-       on-response="handleResponse"></iron-ajax>
-    <google-map id="positionSatelite">
-      <google-map-marker id="markerSatelite"></google-map-marker>
-    </google-map>
+       on-request = "handleRequest"
+       on-error = "handleError"
+       on-response="handleResponse"
+       last-response="{{positionResponse}}"></iron-ajax>
+        <div class="layout horizontal">
+          <h1 class="title flex">ISS Location</h1>
+          <div>
+          <paper-button class="white" on-click="refreshData" raised>Refresh</paper-button>
+          </div>
+        </div>
+        <paper-tabs selected="0">
+          <paper-tab on-click="showInformation">Information</paper-tab>
+          <paper-tab on-click="showMap">Location</paper-tab>
+        </paper-tabs>
+        <paper-material class="positionDetail" id="positionDetail" elevation="0 ">
+            <p>Last Check = <span id="lastCheck">{{lastCheck}}</span></p> 
+            <p>Latitude = {{positionResponse.latitude}}</p> 
+            <p>Longitude = {{positionResponse.longitude}}</p> 
+            <p>Altitude = {{positionResponse.altitude}}</p> 
+            <p>Velocity = {{positionResponse.velocity}}</p> 
+            <p>Visibility = {{positionResponse.visibility}}</p> 
+        </paper-material>
+        <google-map id="positionSatelite" hidden>
+          <google-map-marker id="markerSatelite">
+            <h4>Current Location</h4>
+            </div>
+          </google-map-marker>
+        </google-map>
   </template>
 
   <script>
@@ -53,19 +87,57 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
               };
             }
-          }
+          },
+          lastCheck: String
         },
-        handleResponse: function(e){
-          console.log(e.detail.response);
+        handleResponse: function(e) {
+          // console.log(e.detail.response);
+          app.$.loading.close(); 
+
+          this.lastCheck = moment.unix(e.detail.response.timestamp).format('HH:mm: DD-MM-YYYY');
+        },
+        handleRequest: function() {
+          app.$.loading.open(); 
+        },
+        handleError: function(e) {
+          app.$.toast.text = e.detail.error.message.concat('. Check your connection');
+          app.$.toast.show();
+          app.$.loading.close(); 
+        },
+        showMap: function(){
+          this.$.positionSatelite.removeAttribute('hidden');
+          this.$.positionDetail.setAttribute('hidden', true);
+
           var satelite = this.$.positionSatelite;
           var marker = this.$.markerSatelite;
 
-          marker.latitude = satelite.latitude = e.detail.response.latitude;
-          marker.longitude = satelite.longitude = e.detail.response.longitude;
-          
-          satelite.zoom = 3;
+          marker.latitude = satelite.latitude = this.positionResponse.latitude;
+          marker.longitude = satelite.longitude = this.positionResponse.longitude;
 
-          marker.animation = "BOUNCE";
+          satelite.zoom = 3;
+          satelite.resize();
+
+          marker.animation = 'BOUNCE';
+          marker.open = true;
+        },
+        showInformation: function(){
+          this.$.positionDetail.removeAttribute('hidden');
+          this.$.positionSatelite.setAttribute('hidden', true);
+
+          var satelite = this.$.positionSatelite;
+          var marker = this.$.markerSatelite;
+
+          marker.latitude = satelite.latitude = this.positionResponse.latitude;
+          marker.longitude = satelite.longitude = this.positionResponse.longitude;
+
+          satelite.zoom = 3;
+          satelite.resize();
+
+          marker.animation = 'BOUNCE';
+          marker.open = true;
+        },
+        refreshData: function(){
+          console.log(this.$.reqSat.generateRequest());
         }
       });
     })();

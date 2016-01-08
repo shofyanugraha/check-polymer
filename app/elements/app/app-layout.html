@@ -56,16 +56,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-scroll-header-panel>
       <paper-scroll-header-panel id="contentDrawer" main>
         <paper-toolbar>
-          <div class="spacer title">Title</div>
-          <paper-icon-button icon="refresh"></paper-icon-button>
+          <div class="spacer title">{{title}}</div>
         </paper-toolbar>
         <div class="content">
             <content></content>
-        </div>
-        
-
-        
-        </paper-scroll-header-panel>
+        </div>  
+      </paper-scroll-header-panel>
     </paper-drawer-panel>
   </template>
 
@@ -76,7 +72,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer({
         is: 'app-layout',
         properties: {
-          routes: {
+          title: {
             type: String,
             notify: true
           }
