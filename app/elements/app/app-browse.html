@@ -8,7 +8,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<script src="../../bower_components/moment/moment.js"></script>
 
 <dom-module id="app-browse">
   <template>
@@ -18,13 +17,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         height: 100%;
         position: relative;
+        --paper-tab-ink: #ddd;
         --paper-tab{
           background: #ddd;
-          color: #ddd;
-        }
-        --paper-tab-content{
-          background: #ddd;
-          color: #ddd;
         }
       }
       google-map {
@@ -73,8 +68,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </div>
           </google-map-marker>
         </google-map>
-  </template>
 
+  </template>
   <script>
     (function() {
       'use strict';
@@ -87,11 +82,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             value: function() {
               return {
                 'entry': {
-                  name: 'slide-from-left-animation',
+                  name: 'fade-in-animation',
                   node: this
                 },
                 'exit': {
-                  name: 'slide-left-animation',
+                  name: 'fade-out-animation',
                   node: this
                 }
               };
@@ -100,13 +95,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           lastCheck: String
         },
         attached: function() {
-          
-          this.async(function() {
-            var tiH = this.$.titleISS.offsetHeight;
-            console.log(tiH);
-          })
-          
-          map.style.height = (576-170) + 'px';
+          var height = 576 - 170;
+          this.$.positionSatelite.style.height = height + 'px';
+
+          document.querySelector('app-layout').title = "Current Location";
         },
         handleResponse: function(e) {
           // console.log(e.detail.response);
@@ -121,7 +113,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           satelite.zoom = 3;
           satelite.resize();
 
-          this.lastCheck = moment.unix(e.detail.response.timestamp).format('HH:mm: DD-MM-YYYY');
+          var monthNames = [
+            'January', 'February', 'March',
+            'April', 'May', 'June', 'July',
+            'August', 'September', 'October',
+            'November', 'December'
+          ];
+
+          var date = new Date(e.detail.response.timestamp * 1000);
+          var day = date.getDate();
+          var monthIndex = date.getMonth();
+          var year = date.getFullYear();
+          // Hours part from the timestamp
+          var hours = date.getHours();
+          // Minutes part from the timestamp
+          var minutes = '0' + date.getMinutes();
+          // Seconds part from the timestamp
+          var seconds = '0' + date.getSeconds();
+          this.lastCheck = day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' + hours + ':' + 
+                            minutes.substr(-2) + ':' + seconds.substr(-2);
         },
         handleRequest: function() {
           app.$.loading.open(); 
@@ -131,7 +141,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           app.$.toast.show();
           app.$.loading.close(); 
         },
-        showMap: function(){
+        showMap: function() {
           this.$.positionSatelite.removeAttribute('hidden');
           this.$.positionDetail.setAttribute('hidden', true);
 
@@ -147,7 +157,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           marker.animation = 'BOUNCE';
           marker.open = true;
         },
-        showInformation: function(){
+        showInformation: function() {
           this.$.positionDetail.removeAttribute('hidden');
           this.$.positionSatelite.setAttribute('hidden', true);
 
@@ -163,7 +173,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           marker.animation = 'BOUNCE';
           marker.open = true;
         },
-        refreshData: function(){
+        refreshData: function() {
           this.$.reqSat.generateRequest();
         }
       });

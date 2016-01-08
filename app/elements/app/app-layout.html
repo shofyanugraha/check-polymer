@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Drawer Toolbar -->
         <paper-toolbar id="drawerToolbar">
-          <span class="menu-name">Menu</span>
+          <span class="menu-name">ISS Locator</span>
         </paper-toolbar>
 
         <!-- Drawer Content -->
@@ -43,11 +43,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Location</span>
           </a>
 
-          <a data-route="people" href="{{baseUrl}}people">
-            <iron-icon icon="social:people"></iron-icon>
-            <span>People</span>
-          </a>
-
           <a data-route="info" href="{{baseUrl}}info">
             <iron-icon icon="info"></iron-icon>
             <span>About</span>
@@ -55,7 +50,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-menu>
       </paper-scroll-header-panel>
       <paper-scroll-header-panel id="contentDrawer" main>
-        <paper-toolbar>
+        <paper-toolbar id="mainToolbar">
+          <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
           <div class="spacer title">{{title}}</div>
         </paper-toolbar>
         <div class="content">

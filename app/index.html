@@ -56,6 +56,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <!-- For shared styles, shared-styles.html import in elements.html -->
   <style is="custom-style" include="shared-styles"></style>
+  
 
 </head>
 
@@ -65,11 +66,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-pages attr-for-selected="data-layout" selected="{{layout}}">
       <app-intro data-layout="intro"></app-intro>
-      <app-layout data-layout="app" title="Current Location">
+      <app-layout data-layout="app">
         <neon-animated-pages attr-for-selected="data-route" selected="{{route}}">
-          <app-browse data-route="browse">a</app-browse>
-          <!-- <app-browse data-route="people">people</app-browse>
-          <app-browse data-route="info">info</app-browse> -->
+          <app-browse data-route="browse"></app-browse>
+          <app-about data-route="info"></app-about>
         </neon-animated-pages>
       </app-layout>
     </iron-pages>
@@ -102,6 +102,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <!-- build:js scripts/app.js -->
   <script src="scripts/app.js"></script>
+  <script src="../bower_components/moment/moment.js"></script>
   <!-- endbuild-->
 </body>
 
