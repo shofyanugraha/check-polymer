@@ -65,7 +65,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-pages attr-for-selected="data-layout" selected="{{layout}}">
       <app-intro data-layout="intro"></app-intro>
-      <app-layout data-layout="app">
+      <app-layout data-layout="app" title="Current Location">
         <neon-animated-pages attr-for-selected="data-route" selected="{{route}}">
           <app-browse data-route="browse">a</app-browse>
           <!-- <app-browse data-route="people">people</app-browse>
@@ -76,6 +76,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-toast id="toast">
       <span class="toast-hide-button" role="button" tabindex="0" onclick="app.$.toast.hide()">Ok</span>
     </paper-toast>
+    <paper-dialog id="loading" entry-animation="fade-in-animation"
+                  exit-animation="fade-out-animation">
+      <paper-spinner active></paper-spinner>
+    </paper-dialog>
 
     <!-- Uncomment next block to enable Service Worker support (1/2) -->
     <!--
