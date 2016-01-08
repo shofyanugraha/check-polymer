@@ -41,7 +41,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // imports are loaded and elements have been registered
   });
 
-
   // Scroll page to top and expand header
   app.scrollPageToTop = function() {
     if (app.$.headerPanelMain) {

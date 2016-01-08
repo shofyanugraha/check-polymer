@@ -15,30 +15,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
+        height: 100%;
+        position: relative;
       }
-      a{
-        display: inline-block;
-      }
-      img {
-        max-width: 100%;
-        fill: #ddd !important;
-      }
-      .mini {
-        width: 160px;
-      }
-
+    google-map {
+      height: 100vh;
+    }
     </style>
-    <div class="heading-page">
-      <app-logo class="flex" link size="mini"></app-logo>
-    </div>
-    <div class="layout center vertical auth-hold">
-      <paper-material elevation="0" class="auth-holder">
-        <content></content>      
-      </paper-material>
-    </div>
-    
-
-    </a>
+    <iron-ajax
+       auto
+       url="https://api.wheretheiss.at/v1/satellites/25544"
+       handle-as="json"
+       on-response="handleResponse"></iron-ajax>
+    <google-map id="positionSatelite">
+      <google-map-marker id="markerSatelite"></google-map-marker>
+    </google-map>
   </template>
 
   <script>
@@ -63,6 +54,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               };
             }
           }
+        },
+        handleResponse: function(e){
+          console.log(e.detail.response);
+          var satelite = this.$.positionSatelite;
+          var marker = this.$.markerSatelite;
+
+          marker.latitude = satelite.latitude = e.detail.response.latitude;
+          marker.longitude = satelite.longitude = e.detail.response.longitude;
+          
+          satelite.zoom = 3;
+
+          marker.animation = "BOUNCE";
         }
       });
     })();
